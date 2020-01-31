@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Info Liga Inggris</title>
+    <meta name="description" content="Aplikasi Bola"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d32f2f">
+</head>
+<body>
+
+<!-- Start Navigation -->
+<nav class="orange darken-2" role="navigation">
+    <div class="nav-wrapper container">
+        <a href="#" class="brand-logo" id="logo-container">Info Liga Inggris</a>
+        <a href="./index.html" class="sidenav-trigger" data-target="nav-mobile">
+          <i class="material-icons">&#8592</i>
+        </a>
+        <ul class="topnav right hide-on-med-and-down"></ul>
+        <ul class="sidenav" id="nav-mobile"></ul>
+      </div>
+</nav>
+    <!-- Akhir Navigasi -->
+
+    <div class="container" id="body-content"></div>
+    
+    <div class="container" id="body-content"></div>
+    <div class="fixed-action-btn" id="icon">
+    </div>
+
+    <script src="/sw_push.js"></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js"
+    ></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/idb.js"></script>
+    <script src="js/db-controller.js"></script>
+
+
+    <script>
+      // REGISTER SERVICE WORKER
+      document.addEventListener("DOMContentLoaded", function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var isFromSaved = urlParams.get("saved");
+        var button = document.getElementById("icon");
+        var item;
+        getTeamById().then(function(data){
+            item = data;
+        });
+        if (isFromSaved) {
+          // Hide fab jika dimuat dari indexed db
+          console.log("Dari Saved klik.");
+
+          button.innerHTML = `
+          <a class="btn-floating btn-large red" id="remove">
+          <i class="large material-icons"><p>remove</p></i>
+          </a>
+          `
+          button.onclick = function() {
+            console.log("Tombol REMOVE di klik.");
+            removeItem(item);
+          };
+          
+        } else {
+          console.log("Dari nonSaved klik.");
+
+          button.innerHTML = `
+          <a class="btn-floating btn-large red" id="save">
+          <i class="large material-icons">save</i>
+          </a>
+          `
+          button.onclick = function() {
+          console.log("Tombol SAVE di klik.");
+          saveForLater(item);
+        };
+        }
+
+        
+      });
+
+      
+      
+    </script>
+  </body>
+</html>
